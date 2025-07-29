@@ -20,8 +20,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define QUICK_TAP_TERM 0
-#define TAPPING_TERM 100
+/* Select hand configuration */
+
+
+#define MASTER_LEFT
+// #define MASTER_RIGHT
+// #define EE_HANDS
+
+#define TAPPING_TERM 200
+
+#define PERMISSIVE_HOLD // use dual-key if we press to fast
+// #define RETRO_TAPPING // send tap key even if we didn't use the mod
+// #define IGNORE_MOD_TAP_INTERRUPT
+
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD // press both shift to capitablize next word
+
+#define COMBO_COUNT 13
+#define COMBO_MUST_HOLD_PER_COMBO
+#define COMBO_TERM 20
 
 #undef RGBLIGHT_LED_COUNT
 #define RGBLIGHT_EFFECT_BREATHING
