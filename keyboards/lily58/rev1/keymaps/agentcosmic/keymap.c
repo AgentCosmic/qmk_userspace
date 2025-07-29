@@ -195,7 +195,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // set_timelog();
     }
 
-    // overcome limitation of using curly brackets with ctrl mod tap
+    // let's us use curly brackets with ctrl mod tap https://docs.qmk.fm/mod_tap#changing-tap-function
     switch (keycode) {
         case LCTL_T(KC_LCBR):
             if (record->tap.count && record->event.pressed) {
@@ -212,4 +212,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     return true;
+}
+
+// Use tapping term and retro tapping to help us type faster with space mod tap.
+// Shorter time so it trigger before the next keypress, retro tapping so we don't need to tap very fast.
+// Without this, the space and next keypress will come out in opposite order.
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_FN, KC_SPC):
+            return 100;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(_FN, KC_SPC):
+            return true;
+        default:
+            return false;
+    }
 }
