@@ -1,10 +1,10 @@
 #include QMK_KEYBOARD_H
 
 enum layer_number {
-  _NGM = 0,
-  _QWE,
-  _COH,
-  _FN,
+    _NGM = 0,
+    _FN,
+    _QWE,
+    _COH,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -169,11 +169,40 @@ static void render_logo(void) {
     oled_write_raw_P(raw_logo, sizeof(raw_logo));
 }
 
+#define L_BASE 0
+#define L_1 (1 << 1)
+#define L_2 (1 << 2)
+#define L_3 (1 << 3)
+char layer_state_str[24];
+const char *get_layer_name(void) {
+    // copied from read_layer_state to set own layer name https://github.com/qmk/qmk_firmware/blob/master/keyboards/lily58/lib/layer_state_reader.c
+    switch (layer_state)
+    {
+        case L_BASE:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Engram");
+            break;
+        case L_1:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Function");
+            break;
+        case L_2:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Qwerty");
+            break;
+        case L_2 | L_3:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Qwerty+COH");
+            break;
+        case L_3:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: COH");
+            break;
+        default:
+            snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Undef-%u", layer_state);
+    }
+    return layer_state_str;
+}
 
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         // If you want to change the display of OLED, you need to change here
-        oled_write_ln(read_layer_state(), false);
+        oled_write_ln(get_layer_name(), false);
         oled_write_ln(read_keylog(), false);
         oled_write_ln(read_keylogs(), false);
         //oled_write_ln(read_mode_icon(keymap_config.swap_lalt_lgui), false);
@@ -218,20 +247,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Shorter time so it trigger before the next keypress, retro tapping so we don't need to tap very fast.
 // Without this, the space and next keypress will come out in opposite order.
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT(_FN, KC_SPC):
-            return 100;
-        default:
-            return TAPPING_TERM;
-    }
-}
-
-bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT(_FN, KC_SPC):
-            return true;
-        default:
-            return false;
-    }
-}
+// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case LT(_FN, KC_SPC):
+//             return 100;
+//         default:
+//             return TAPPING_TERM;
+//     }
+// }
+//
+// bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case LT(_FN, KC_SPC):
+//             return true;
+//         default:
+//             return false;
+//     }
+// }

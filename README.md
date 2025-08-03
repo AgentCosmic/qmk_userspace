@@ -6,7 +6,8 @@ See [External QMK Userspace](https://docs.qmk.fm/newbs_external_userspace) for m
 
 ## Getting started
 
-1. Follow the instructions in the [QMK Docs](https://docs.qmk.fm/newbs_getting_started) to set up your build environment
+1. Follow the instructions in the [QMK Docs](https://docs.qmk.fm/newbs_getting_started) to set up your build environment.
+   On Windows you have to set QMK path e.g. `qmk config -H /d/studio/code/keyboard/qmk_firmware`.
 2. Enable userspace in QMK config using `qmk config user.overlay_dir="$(realpath qmk_userspace)"`
 3. (Optional) Add a new keymap for your board using `qmk new-keymap` e.g. `qmk new-keymap -kb lily58 -km agentcosmic`
 4. Add your keymap(s) to the build by running `qmk userspace-add -kb <your_keyboard> -km <your_keymap>`
